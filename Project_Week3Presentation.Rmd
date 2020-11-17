@@ -1,0 +1,41 @@
+---
+title: 'Week 3 Project: 11/16/2020'
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r,include=FALSE}
+library(tidyr)
+library(HistData)
+library(plotly)
+library(ggplot2)
+data("GaltonFamilies")
+```
+
+```{r, include=FALSE}
+GaltonFamilies_long <- gather(GaltonFamilies,parent,parentheight,father:mother,factor_key = TRUE)
+familyheight<- GaltonFamilies_long[
+  with(GaltonFamilies_long, order(family, childNum)),
+  ]
+
+```
+
+
+The plot below consists of Child and Parent Heights by Parent and Child Gender.  The data is from the "GaltonFamilies" dataset from the "HistData" package.
+```{r, echo=FALSE, message=FALSE}
+#fam_df <- selected options 
+p <- ggplot(familyheight,aes(x=childHeight,y=parentheight)) +
+  geom_point(aes(shape=parent,color=gender)) +
+  scale_shape_manual(values=c(1,3))+
+  scale_color_manual(values=c("red","blue")) +
+  ggtitle("Child Height vs Parent Height") + 
+  xlab("Child Height") +
+  ylab("Parent Height")
+
+myplot <- ggplotly(p)
+myplot
+
+```
